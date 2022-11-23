@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+for INFL in `cat influencers_retweets.txt`; 
+do
+	grep $INFL retweeted_cols.tsv | awk -F "\t" '{print $4}' | tr "," "\n" | sed 's/"//g' > temp.hashtags
+	iconv -f utf-8 -t ascii//TRANSLIT temp.hashtags | sed 's/\b[a-z]\b//g' | sed 's/\b[A_Z]\b//g' | sed 's/ //g' | sed '/^$/d' | awk '{$0=NR>1?$0"\t":$0"\t"}1' | grep -v '?' > infl_retweets/$INFL.hashtags;
+done

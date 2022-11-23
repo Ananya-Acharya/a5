@@ -1,0 +1,37 @@
+ 1001  grep replied_to downloaded_tweets_extend_original_nolf2.tsv > original_tweets_replied.tsv 
+ 1002  grep 'replied_to' downloaded_tweets_extend_nolf2.tsv > tweets_replied.tsv 
+ 1003  awk -F "\t" '($2 != $6) {print $6}' original_tweets_replied.tsv | sort | uniq -c | sort -n -k 1 | awk '($1 >=3) {print $2}' > influencers_nobots.txt 
+ 1004  awk -F "\t" '($2 != $6) {print $6}' tweets_replied.tsv | sort | uniq -c | sort -n -k 1 | awk '($1 >=3) {print $2}' >> influencers_nobots.txt 
+ 1005  mkdir infl_replies
+ 1006  for INFL in cat influencers_nobots.txt; do grep $INFL original_tweets_replied.tsv tweets_replied.tsv | awk -F "\t" '{print $4}' | tr "," "\n" | sed 's/"//g' > infl_replies/$INFL.hashtags; done
+done
+ 1008  vi extract_hashtags
+ 1009  chmod u+x extract_hashtags 
+ 1010  ./extract_hashtags 
+ 1011  cat extract_hashtags 
+ 1012  ./extract_hashtags 
+ 1013  cat extract_hashtags 
+ 1014  ./extract_hashtags 
+ 1015  history > cmds.log
+
+  997  cat extract_hashtags
+  998  cat calc.sh
+  999  . calc.sh
+ 1000  history > cmds.log
+
+  997  grep "type=retweet" downloaded_tweets_extend_nolf2_nobot.tsv | iconv -f utf-8 -t ascii//TRANSLIT | tr '[A-Z]' '[a-z]' | sed '/^$/d' > temp.tsv
+  998  awk -F'\t' '{print $5}' temp.tsv | awk -F ' ' '{print $2}' | sed 's/id=//' | sort > retweetID.txt
+  999  fgrep -F retweetID.txt downloaded_tweets_extend_original_nolf2_nobot.tsv > tweets_retweeted.tsv
+ 1000  awk -F'\t' '{print $5}' temp.tsv | awk -F ' ' '{print $2}' | sed 's/id=//' | sed 's/^$/d' | sort > retweetID.txt
+ 1001  awk -F'\t' '{print $5}' temp.tsv | awk -F ' ' '{print $2}' | sed 's/id=//' | sort > retweetID.txt
+ 1002  sed 's/^$/d' retweetID.txt > searchfile
+ 1003  awk -F'\t' '{print $5}' temp.tsv | awk -F ' ' '{print $2}' | sed 's/id=//' | sed '/^$/d' | sort > retweetID.txt
+ 1004  fgrep -f retweetID.txt downloaded_tweets_extend_original_nolf2_nobot.tsv > retweeted_cols.tsv
+ 1005  cut -f 2 retweeted_cols.tsv | sort | uniq -c | sort -nr |  awk '($1 >=3) {print $2}' > influencers_retweets.txt
+ 1006  mkdir infl_retweets
+ 1007  . extract_hashtags_retweets 
+ 1008  cat extract_hashtags_retweets
+ 1009  cat calc_retweets.sh 
+ 1010  . calc_retweets
+ 1011  . calc_retweets.sh
+ 1012  history>cmds.log
